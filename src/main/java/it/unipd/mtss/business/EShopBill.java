@@ -32,6 +32,11 @@ public class EShopBill implements Bill {
             tot -= applyProcessorDiscount(itemsOrdered) + 
                     applyMouseGift(itemsOrdered) + 
                     applyGiftSameMouseAndKeyboard(itemsOrdered);
+            
+            if (tot > 1000) {
+                tot -= (tot*0.1);
+            }
+            
             return tot;
                 
 

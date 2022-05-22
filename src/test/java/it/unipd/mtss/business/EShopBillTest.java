@@ -244,4 +244,30 @@ public class EShopBillTest {
         assertEquals(90, shop.getOrderPrice(orderList, user), DELTA);
     }
     
+  //5
+    @Test
+    public void 
+    testGetOrderPrice10DiscountAppliedIfTotalMoreThan1000() 
+            throws BillException {
+      
+        orderList.add(new EItem(EItemType.MOTHERBOARD, "MB2", 800));
+        orderList.add(new EItem(EItemType.PROCESSOR, "MB3", 200));
+        
+        assertEquals(970.2, shop.getOrderPrice(orderList, user), DELTA);
+    }
+    
+    
+    @Test
+    public void 
+    testGetOrderPrice10DiscountNotAppliedIfTotalLessOrEqualThan1000() 
+            throws BillException {
+        
+        orderList.add(new EItem(EItemType.MOTHERBOARD, "MB2", 800));
+        assertEquals(878, shop.getOrderPrice(orderList, user), DELTA);
+        
+        orderList.add(new EItem(EItemType.PROCESSOR, "MB3", 122));
+        assertEquals(1000, shop.getOrderPrice(orderList, user), DELTA);
+    }
+    
+    
 }
