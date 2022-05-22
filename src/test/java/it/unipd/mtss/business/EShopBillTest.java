@@ -6,7 +6,10 @@
 package it.unipd.mtss.business;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import org.junit.Before;
@@ -35,7 +38,7 @@ public class EShopBillTest {
     @BeforeClass
     public static void beforeClass() {
         shop = new EShopBill();
-        user = new User("nome", "cognome");
+        user = new User("nome", "cognome", 20);
         
         mouse = new EItem(EItemType.MOUSE, "Mouse 1", 10);
         processor = 
@@ -84,7 +87,7 @@ public class EShopBillTest {
         }
     }
     
-  //2
+    //2
     @Test
     public void testApplyProcessorDiscountIs0IfLessOrEqualThan5Processors()
     {
@@ -143,7 +146,8 @@ public class EShopBillTest {
 
     }
     
-  //3
+    
+    //3
     @Test
     public void testApplyMouseGiftIs0IfLessOrEqualThan10Mouses() {
         
@@ -244,7 +248,7 @@ public class EShopBillTest {
         assertEquals(90, shop.getOrderPrice(orderList, user), DELTA);
     }
     
-  //5
+    //5
     @Test
     public void 
     testGetOrderPrice10DiscountAppliedIfTotalMoreThan1000() 
@@ -269,7 +273,7 @@ public class EShopBillTest {
         assertEquals(1000, shop.getOrderPrice(orderList, user), DELTA);
     }
     
-  //6
+    //6
     @Test(expected = BillException.class)
     public void testGetOrdePriceThrowsExcepionOnOrderListMoreThanThirtyItems() 
             throws BillException
@@ -291,7 +295,7 @@ public class EShopBillTest {
         }
     }
     
-  //7
+    //7
     @Test
     public void testGetOrderPrice2EurCommissionIsAppliedIfTotLessThan10()
         throws BillException
@@ -317,6 +321,80 @@ public class EShopBillTest {
             //tot = 11
             orderList.add(new EItem(EItemType.MOTHERBOARD, "MB2", 1));
             assertEquals(11, shop.getOrderPrice(orderList, user), DELTA);
+    }
+    
+    //8
+    @Test
+    public void testIsGiftOrderApplicableTimeAndAgeConditions() {
+        
+        User u = new User("nome2", "cognome2", 17);
+
+        shop.setCustomTime(LocalTime.of(17,50));
+        assertFalse(shop.isGiftOrderApplicable(u));
+        assertFalse(shop.isGiftOrderApplicable(user));
+        
+        shop.setCustomTime(LocalTime.of(18,0));
+        assertFalse(shop.isGiftOrderApplicable(u));
+        assertFalse(shop.isGiftOrderApplicable(user));
+        
+        shop.setCustomTime(LocalTime.of(18,1));
+        assertTrue(shop.isGiftOrderApplicable(u));
+        assertFalse(shop.isGiftOrderApplicable(user));
+
+        shop.setCustomTime(LocalTime.of(18,59));
+        assertTrue(shop.isGiftOrderApplicable(u));
+        assertFalse(shop.isGiftOrderApplicable(user));
+
+        shop.setCustomTime(LocalTime.of(19,00));
+        assertFalse(shop.isGiftOrderApplicable(u));
+        assertFalse(shop.isGiftOrderApplicable(user));
+
+        shop.turnCustomTimeModeOff();
+    }
+    
+    
+    @Test
+    public void testGetOrderPriceIfOrdersGiftIsAppliedWith10Users() 
+            throws BillException{
+        
+        User[] users ={
+            new User("a", "b", 5),
+            new User("c", "d", 10),
+            new User("e", "f", 8),
+            new User("g", "h", 10),
+            new User("i", "l", 12),
+            new User("m", "n", 15),
+            new User("o", "p", 9),
+            new User("q", "r", 10),
+            new User("s", "t", 3),
+            new User("u", "v", 16),
+            new User("w", "z", 14)
+        };
+
+        shop.setCustomTime(LocalTime.of(18,15));
+        shop.setRandomSeed(44);
+
+        
+        double price = 78;
+
+        assertEquals(0, shop.getOrderPrice(orderList, users[0]), DELTA);
+        assertEquals(price, shop.getOrderPrice(orderList, user), DELTA);
+        assertEquals(0, shop.getOrderPrice(orderList, users[1]), DELTA);
+        assertEquals(0, shop.getOrderPrice(orderList, users[2]), DELTA);
+        assertEquals(0, shop.getOrderPrice(orderList, users[3]), DELTA);
+        assertEquals(0, shop.getOrderPrice(orderList, users[4]), DELTA);
+        assertEquals(price, shop.getOrderPrice(orderList, users[2]), DELTA);
+        assertEquals(price, shop.getOrderPrice(orderList, users[5]), DELTA);
+        assertEquals(0, shop.getOrderPrice(orderList, users[5]), DELTA);
+        assertEquals(0, shop.getOrderPrice(orderList, users[6]), DELTA);
+        assertEquals(0, shop.getOrderPrice(orderList, users[7]), DELTA);
+        assertEquals(0, shop.getOrderPrice(orderList, users[8]), DELTA);
+        assertEquals(0, shop.getOrderPrice(orderList, users[9]), DELTA);
+        assertEquals(price, shop.getOrderPrice(orderList, users[10]), DELTA);
+
+        shop.turnCustomTimeModeOff();
+        shop.resetRandom();
+        shop.resetGiftOrders();
     }
     
 }
