@@ -29,7 +29,8 @@ public class EShopBill implements Bill {
                 tot += item.getPrice();
             }
             
-            tot -= applyProcessorDiscount(itemsOrdered);
+            tot -= applyProcessorDiscount(itemsOrdered) + 
+                    applyMouseGift(itemsOrdered);;
             return tot;
                 
 
@@ -39,6 +40,27 @@ public class EShopBill implements Bill {
         
     }
 
+    public double applyMouseGift(List<EItem> itemsOrdered) {
+        int mouse_number = 0;
+        double pmin = Double.POSITIVE_INFINITY;
+        for(EItem item : itemsOrdered) {
+            if(EItemType.MOUSE == item.getItemType() ) {
+                if(pmin > item.getPrice()) {
+                    pmin = item.getPrice();
+                }
+                mouse_number++;
+            }
+        }
+        
+        if (mouse_number > 10) {
+            return pmin;   
+        } else {
+            return 0.0;
+        }
+            
+        
+        
+    }
     
     public double applyProcessorDiscount(List<EItem> itemsOrdered) {
         double discount = 0.0;

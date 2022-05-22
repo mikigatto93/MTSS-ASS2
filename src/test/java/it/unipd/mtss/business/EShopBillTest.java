@@ -143,4 +143,61 @@ public class EShopBillTest {
 
     }
     
+  //3
+    @Test
+    public void testApplyMouseGiftIs0IfLessOrEqualThan10Mouses() {
+        
+        // 1 mouse
+        assertEquals(0.0, shop.applyMouseGift(orderList), DELTA);
+        
+        //10 mouses
+        for (int i = 0; i < 9; i++) {
+            orderList.add(new EItem(EItemType.MOUSE, "Mouse"+i, 5+i));
+        }
+        
+        assertEquals(0.0, shop.applyMouseGift(orderList), DELTA);
+        
+    }
+    
+    
+    @Test
+    public void testApplyMouseGiftIsGiftedIfMoreThan10Mouses() {
+        
+        
+        //11 mouses
+        for (int i = 0; i < 10; i++) {
+            orderList.add(new EItem(EItemType.MOUSE, "Mouse"+i, 5+i));
+        }
+        
+        assertEquals(5.0, shop.applyMouseGift(orderList), DELTA);
+        
+    }
+    
+    
+    @Test
+    public void testGetOrderPriceMouseGiftIsAppliedIfMoreThan10Mouses()
+            throws BillException
+    {
+        //11 mouses
+        for (int i = 0; i < 10; i++) {
+            orderList.add(new EItem(EItemType.MOUSE, "Mouse"+i, 5+i));
+        }
+        assertEquals(168, shop.getOrderPrice(orderList, user), DELTA);
+
+    }
+    
+    @Test
+    public void 
+    testGetOrderPriceMouseGiftIsNotAppliedIfLessOrEqualThan10Mouses()
+            throws BillException
+    {
+        //4 mouses
+        orderList.add(new EItem(EItemType.MOUSE, "Mouse2", 5));
+        orderList.add(new EItem(EItemType.MOUSE, "Mouse3", 5.5));
+        orderList.add(new EItem(EItemType.MOUSE, "Mouse4", 5));
+        
+        assertEquals(93.5, shop.getOrderPrice(orderList, user), DELTA);
+
+    }
+    
 }
