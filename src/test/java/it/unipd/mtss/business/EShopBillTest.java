@@ -291,4 +291,32 @@ public class EShopBillTest {
         }
     }
     
+  //7
+    @Test
+    public void testGetOrderPrice2EurCommissionIsAppliedIfTotLessThan10()
+        throws BillException
+    {
+        ArrayList<EItem> orderList = new ArrayList<EItem>();
+        orderList.add(new EItem(EItemType.MOUSE, "Mouse1", 3));
+        orderList.add(new EItem(EItemType.MOTHERBOARD, "k1", 5));
+        
+        assertEquals(10, shop.getOrderPrice(orderList, user), DELTA);
+    }
+    
+    @Test
+    public void 
+    testGetOrderPrice2EurCommissionIsNotAppliedIfTotMoreOrEqualThan10()
+            throws BillException
+    {
+            // tot = 10
+            ArrayList<EItem> orderList = new ArrayList<EItem>();
+            orderList.add(new EItem(EItemType.MOTHERBOARD, "MB1", 3));
+            orderList.add(new EItem(EItemType.KEYBOARD, "k1", 7));
+            assertEquals(10, shop.getOrderPrice(orderList, user), DELTA);
+            
+            //tot = 11
+            orderList.add(new EItem(EItemType.MOTHERBOARD, "MB2", 1));
+            assertEquals(11, shop.getOrderPrice(orderList, user), DELTA);
+    }
+    
 }
