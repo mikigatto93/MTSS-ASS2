@@ -9,6 +9,7 @@ package it.unipd.mtss.business;
 import java.util.List;
 import it.unipd.mtss.business.exception.BillException;
 import it.unipd.mtss.model.EItem;
+import it.unipd.mtss.model.EItemType;
 import it.unipd.mtss.model.User;
 
 public class EShopBill implements Bill {
@@ -28,7 +29,7 @@ public class EShopBill implements Bill {
                 tot += item.getPrice();
             }
             
-            
+            tot -= applyProcessorDiscount(itemsOrdered);
             return tot;
                 
 
@@ -38,7 +39,26 @@ public class EShopBill implements Bill {
         
     }
 
-
+    
+    public double applyProcessorDiscount(List<EItem> itemsOrdered) {
+        double discount = 0.0;
+        int processor_number = 0;
+        double pmin = Double.POSITIVE_INFINITY;;
+        for(EItem item : itemsOrdered) {
+            if(EItemType.PROCESSOR == item.getItemType() ) {
+                if(pmin > item.getPrice()) {
+                    pmin = item.getPrice();
+                }
+                processor_number++;
+            }
+        }
+        
+        if(processor_number > 5) {
+            discount = pmin*0.5;
+        }
+        
+        return discount;
+    }
 
     
     

@@ -84,4 +84,63 @@ public class EShopBillTest {
         }
     }
     
+  //2
+    @Test
+    public void testApplyProcessorDiscountIs0IfLessOrEqualThan5Processors()
+    {
+        //3 processors
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc2", 40));
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc3", 45));
+        assertEquals(0.0, shop.applyProcessorDiscount(orderList), DELTA);
+        
+        
+        //5 processors
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc4", 30));
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc5", 55));
+        assertEquals(0.0, shop.applyProcessorDiscount(orderList), DELTA);
+        
+    }
+    
+    
+    @Test
+    public void 
+    testApplyProcessorDiscountIsCorrectIfMoreThan5Processors()
+    {
+        //6 processors
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc2", 40));
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc3", 45));
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc4", 30));
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc5", 55));
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc6", 20));
+        assertEquals(10, shop.applyProcessorDiscount(orderList), DELTA);
+
+    }
+    
+    @Test
+    public void testGetOrderPriceDiscountIsAppliedIfMoreThan5Processors()
+            throws BillException
+    {
+        //6 processors
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc2", 40));
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc3", 45));
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc4", 30));
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc5", 55));
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc6", 20));
+        assertEquals(258, shop.getOrderPrice(orderList, user), DELTA);
+
+    }
+    
+    @Test
+    public void 
+    testGetOrderPriceDiscountIsNotAppliedIfLessOrEqualThan5Processors()
+            throws BillException
+    {
+        //4 processors
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc2", 40));
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc3", 45));
+        orderList.add(new EItem(EItemType.PROCESSOR, "Proc4", 30));
+        assertEquals(193, shop.getOrderPrice(orderList, user), DELTA);
+
+    }
+    
 }
