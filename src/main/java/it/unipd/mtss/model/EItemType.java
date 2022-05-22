@@ -1,0 +1,15 @@
+////////////////////////////////////////////////////////////////////
+// [Ruth Genevieve] [Bousapnamene] [1192088]
+// [Michele] [Gatto] [1224458]
+////////////////////////////////////////////////////////////////////
+
+package it.unipd.mtss.model;
+
+public enum EItemType {
+   
+    PROCESSOR,
+    MOTHERBOARD,
+    KEYBOARD,
+    MOUSE,
+    
+}
