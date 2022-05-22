@@ -269,5 +269,26 @@ public class EShopBillTest {
         assertEquals(1000, shop.getOrderPrice(orderList, user), DELTA);
     }
     
+  //6
+    @Test(expected = BillException.class)
+    public void testGetOrdePriceThrowsExcepionOnOrderListMoreThanThirtyItems() 
+            throws BillException
+    {
+        for(int i=0; i<30;i++) {
+            orderList.add(keyboard);
+        }
+        
+        try{
+            
+            shop.getOrderPrice(orderList, user);
+        }
+        catch(BillException e) {
+            
+            assertEquals("The order list cannot contain more than thirty items", 
+                    e.getMessage());
+            
+            throw e;
+        }
+    }
     
 }

@@ -23,22 +23,26 @@ public class EShopBill implements Bill {
         
         if (!itemsOrdered.isEmpty()) {
             
+            if(itemsOrdered.size() > 30) {
+                throw new BillException(
+                        "The order list cannot contain more than thirty items");
+            } else {
             
-            double tot = 0.0;
-            for (EItem item : itemsOrdered) {    
-                tot += item.getPrice();
-            }
-            
-            tot -= applyProcessorDiscount(itemsOrdered) + 
-                    applyMouseGift(itemsOrdered) + 
-                    applyGiftSameMouseAndKeyboard(itemsOrdered);
-            
-            if (tot > 1000) {
-                tot -= (tot*0.1);
-            }
-            
-            return tot;
+                double tot = 0.0;
+                for (EItem item : itemsOrdered) {    
+                    tot += item.getPrice();
+                }
                 
+                tot -= applyProcessorDiscount(itemsOrdered) + 
+                        applyMouseGift(itemsOrdered) + 
+                        applyGiftSameMouseAndKeyboard(itemsOrdered);
+                
+                if (tot > 1000) {
+                    tot -= (tot*0.1);
+                }
+                
+                return tot;
+            }   
 
         } else {
             throw new BillException("The order list cannot be empty");
