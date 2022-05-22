@@ -37,6 +37,10 @@ public class EShopBill implements Bill {
                         applyMouseGift(itemsOrdered) + 
                         applyGiftSameMouseAndKeyboard(itemsOrdered);
                 
+                if (tot < 10) {
+                    tot += 2;
+                }
+                
                 if (tot > 1000) {
                     tot -= (tot*0.1);
                 }
