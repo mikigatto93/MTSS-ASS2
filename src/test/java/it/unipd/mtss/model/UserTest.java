@@ -15,7 +15,7 @@ public class UserTest {
     
     @Before
     public void beforeTests() {
-        user = new User("nome", "cognome");
+        user = new User("nome", "cognome", 20);
     }
     
     @Test
@@ -27,5 +27,10 @@ public class UserTest {
     public void testGetSurname(){
         assertEquals("cognome", user.getSurname());
     }
-     
+    
+    @Test
+    public void testGetAge(){
+        assertEquals(20, user.getAge());
+    }
+    
 }

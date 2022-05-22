@@ -9,11 +9,13 @@ public class User {
     
     private String name;
     private String surname;
+    //8
+    private int age;
     
-    public User(String name, String surname) {
+    public User(String name, String surname, int age) {
         this.name = name;
         this.surname = surname;
-
+        this.age = age;
     }
     
     public String getName() {
@@ -23,5 +25,10 @@ public class User {
         return surname;
     }
 
+    //8
+    public int getAge() {
+        return age;
+    }
+    
 
 }
