@@ -200,4 +200,48 @@ public class EShopBillTest {
 
     }
     
+  //4
+    @Test
+    public void 
+    testApplyGiftSameMouseAndKeyboardIs0IfMouseAndKeyboardDifferentQuantity() {
+        //3 mouses and 2 keyboard
+        orderList.add(new EItem(EItemType.MOUSE, "Mouse2", 5));
+        orderList.add(new EItem(EItemType.MOUSE, "Mouse3", 7));
+        
+        assertEquals(0.0, shop.applyGiftSameMouseAndKeyboard(orderList), DELTA);
+    }
+    
+    @Test
+    public void 
+    testApplyGiftSameMouseAndKeyboardIsGiftedIfMouseAndKeyboardSameQuantity() {
+      //2 mouses and 2 keyboard
+        orderList.add(new EItem(EItemType.MOUSE, "Mouse2", 30));
+        
+        assertEquals(10.0, shop.applyGiftSameMouseAndKeyboard(orderList), 
+                DELTA);
+    }
+    
+    @Test
+    public void 
+    testGetOrderPriceIsNotGiftedCheapItemIfMouseAndKeyboardDifferentQuantity() 
+            throws BillException {
+        //3 mouses and 2 keyboard
+        orderList.add(new EItem(EItemType.MOUSE, "Mouse2", 5));
+        orderList.add(new EItem(EItemType.MOUSE, "Mouse3", 7));
+        
+        assertEquals(90, shop.getOrderPrice(orderList, user), DELTA);
+    }
+    
+    @Test
+    public void 
+    testGetOrderPriceIsGiftedCheapItemIfMouseAndKeyboardSameQuantity() 
+            throws BillException {
+        //3 mouses and 3 keyboard
+        orderList.add(new EItem(EItemType.MOUSE, "Mouse2", 5));
+        orderList.add(new EItem(EItemType.MOUSE, "Mouse3", 7));
+        orderList.add(new EItem(EItemType.KEYBOARD, "Mouse3", 4.5));
+        
+        assertEquals(90, shop.getOrderPrice(orderList, user), DELTA);
+    }
+    
 }

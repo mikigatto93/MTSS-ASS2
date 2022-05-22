@@ -30,7 +30,8 @@ public class EShopBill implements Bill {
             }
             
             tot -= applyProcessorDiscount(itemsOrdered) + 
-                    applyMouseGift(itemsOrdered);;
+                    applyMouseGift(itemsOrdered) + 
+                    applyGiftSameMouseAndKeyboard(itemsOrdered);
             return tot;
                 
 
@@ -82,6 +83,30 @@ public class EShopBill implements Bill {
         return discount;
     }
 
-    
+    public double applyGiftSameMouseAndKeyboard(List<EItem> itemsOrdered) {
+        double pmin=Double.POSITIVE_INFINITY;;
+        int art_number=0;
+        for(EItem item : itemsOrdered) {
+            if(EItemType.MOUSE == item.getItemType() || 
+               EItemType.KEYBOARD == item.getItemType() ) {
+                
+                    art_number = EItemType.MOUSE == item.getItemType() ? 
+                            (art_number - 1) : (art_number + 1);
+            }
+               
+            if(pmin > item.getPrice())
+            {
+                pmin = item.getPrice();
+            }
+            
+            
+        }
+        
+        if (art_number == 0) {
+            return pmin;
+        } else {
+            return 0.0;
+        }
+    }
     
 }
